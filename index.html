@@ -6,50 +6,20 @@
   <script async src="https://cdn.ampproject.org/v0.js"></script>
   <script custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js" async></script>
   <!-- <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script> -->
+  <script async custom-element="amp-selector" src="https://cdn.ampproject.org/v0/amp-selector-0.1.js"></script>
+  <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="canonical" href="https://preview.amp.dev/documentation/components/amp-carousel.example.3.html">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-  
+  <script  src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
   <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
   <style amp-custom>
-    :root {
-      --space-1: .5rem;  /* 8px */
-      --space-2: 1rem;   /* 16px */
-    }
-    #carousel-with-preview amp-img {
-      transition: opacity 1s ease-in-out;
-    }
-    .carousel-preview {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .carousel-preview > * {
-      margin: var(--space-1);
-      padding: 0;
-    }
-    .carousel-preview [selected] {
-      opacity: 0.5;
-      outline: none;
-    }
-    .carousel-preview .amp-carousel-slide {
-      margin: var(--space-1);
-      padding: 0;
-    }
-    .carousel-preview button:active {
-      opacity: 0.5;
-    }
-    .carousel1, .carousel2 {
-      /* background: var(--color-bg-light); */
-      /* margin: var(--space-2) 0; */
+    
+     .carousel2 {
       color: rgba(0,0,0,0.87);
     }
-    .carousel1 .slide > amp-img > img{
-      object-fit: contain;
-    }
-    /* .carousel2 .slide > amp-img > img{
-      object-fit: contain;
-    } */
      .caption {
         position: absolute;
       color: #eeeeee;
@@ -58,12 +28,12 @@
       background: rgba(0, 0, 0, 0.6);
       font-size: smaller;
       max-height: 60%;
-      max-width: 40%;
-      font-size: 24px;
+      max-width: 45%;
+      font-size: 23px;
       padding: 15px;
-      font-family: "Open Sans", sans-serif;
+
     }
-    .caption > a{
+    .caption > div.bnrTl > a.bannerTitle{
         color: #EEEEEE;
         text-decoration: underline;
         font-size: 32px;
@@ -71,185 +41,186 @@
         font-family: "Andes", sans-serif;
         padding-bottom: 2em;
     }
-    .caption > a:hover{
+    .caption > div.bnrTl > a.bannerTitle:hover,a.bannerTitle:focus{
         text-decoration: underline;
+        border: none !important;
+    }
+    .chevonSymbl{
+      font-size: 16px;
+    }
+    .dotImg:focus,.dotImg:hover,.dotImg:active	{
+      background-color:orangered;
+
+    }
+    .dots{position: relative;}
+    .dotsContainer{
+      justify-content: center;width: 100%;display: flex;opacity: 0.6;
+      background: rgba(0, 0, 0, 0.6);
+      position:absolute;
+      z-index: 999;
+
+    }
+    .dots{
+      display: inline-block;border-radius: 6px;
+      background-color: #fefefe;
+      width: 12px;height: 12px;margin: 4px;box-shadow: 0 0 3px rgba(22,22,22,0.3);outline: none;} .dots:focus,span[selected]{
+        background-color: red;
+
+      box-shadow: none;border: none;}
+
+
+
+.amp-carousel-button-prev:focus{
+outline:1px solid red;
+}
+.amp-mode-mouse:focus .amp-carousel-button:focus, amp-carousel.i-amphtml-carousel-has-controls .amp-carousel-button:focus, amp-carousel[controls]:focus .amp-carousel-button:focus{
+  outline:1px solid red;
+
+}
+
+
+      /* @media screen and (max-width: 900px) and (min-width: 300px) {
+
+
+     .caption {
+
+      position: relative !important;
+      display: block;
+
+bottom: 0px;
+
+padding: 5px 0;
+
+-webkit-transform: translateY(-0%);
+
+-ms-transform: translateY(-0%);
+
+transform: translateY(-0%);
+
     }
 
-    /* define some contants */
-    .collapsible-captions {
-      --caption-height: 32px;
-      --image-height: 300px;
-      --caption-padding: 1rem;
-      --button-size: 28px;
-      --caption-color: #f5f5f5;;
-      --caption-bg-color: #111;
-      background: var(--caption-bg-color);
-    }
-    .collapsible-captions * {
-      /* disable chrome touch highlight */
-      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-      box-sizing: border-box;
-    }
-    /* see https://amp.dev/documentation/examples/style-layout/how_to_support_images_with_unknown_dimensions/ */
-    .collapsible-captions .fixed-height-container {
-      position: relative;
-      width: 100%;
-      height: var(--image-height);
-    }
-    .collapsible-captions amp-img img {
-      object-fit: contain;
-    }
-    .collapsible-captions figure {
-      margin: 0;
-      padding: 0;
-    }
-    /* single line caption */
-    .collapsible-captions figcaption {
-      position: absolute;
-      bottom: 0;
-      margin: 0;
-      width: 100%;
-      /* inital height is one line */
-      max-height: var(--caption-height);
-      line-height: var(--caption-height);
-      padding: 0 var(--button-size);
-      /* cut text after first line and show an ellipsis */
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      /* animate expansion */
-      transition: max-height 200ms cubic-bezier(0.4, 0, 0.2, 1);
-      /* overlay the carousel icons */
-      z-index: 1000;
-      /* some styling */
-      color: var(--caption-color);
-      background: var(--caption-bg-color);
-    }
-    /* expanded caption */
-    .collapsible-captions figcaption.expanded {
-      /* add padding and show all of the text */
-      padding: var(--button-size);
-      line-height: inherit;
-      white-space: normal;
-      text-overflow: auto;
-      max-height: calc(var(--caption-height) + var(--image-height));
-      /* show scrollbar in case caption is larger than image */
-      overflow: auto;
-    }
-    /* don't show focus highlights in chrome */
-    .collapsible-captions figcaption:focus {
-      outline: none;
-      border: none;
-    }
-    /* the expand/collapse icon */
-    .collapsible-captions figcaption span {
-      display: block;
-      position: absolute;
-      top: calc((var(--caption-height) - var(--button-size)) / 2);
-      right: 2px;
-      width: var(--button-size);
-      height: var(--button-size);
-      line-height: var(--button-size);
-      text-align: center;
-      font-size: 12px;
-      color: inherit;
-      cursor: pointer;
-    }
+
+}  */
+
+
   </style>
+  <!-- <script>
+     $(document).ready(function () {
+    $(window).on('resize', function () {
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      $("#myCarousel .item img").next().removeClass('carousel-caption').addClass('caption');     
+       } 
+        else {
+        $("#myCarousel .item img").next().removeClass('caption').addClass('carousel-caption');
+      }
+   });
+     });
+  </script> -->
 
 </head>
 <body>
 
-<!-- <amp-carousel layout="responsive" width="300" height="168" type="slides" autoplay delay="2000" loop>
-    <amp-img src="accelerated-mobile-pages-advanced/mountains-1.jpg" width="300" height="168" layout="responsive" ></amp-img>
-    <amp-img src="accelerated-mobile-pages-advanced/mountains-2.jpg" width="300" height="168" layout="responsive"></amp-img>
-    <amp-img src="accelerated-mobile-pages-advanced/mountains-3.jpg" width="300" height="168" layout="responsive"></amp-img>
-</amp-carousel> -->
+  <amp-selector id="carouselWithPreviewSelector"
+  class="carousel-preview dotsContainer"
+  on="select:carouselWithPreview.goToSlide(index=event.targetOption)"
+  layout="container">
+      <span role="button" class="dots" option="0" selected></span>
+      <span role="button" option="1" class="dots"></span>
+      <span role="button" option="2" class="dots"></span>
+      <span role="button" option="3" class="dots"></span>
+      <span role="button" option="4" class="dots"></span>
+      <span role="button" option="5" class="dots"></span>
+      <span role="button" option="6" class="dots"></span>
+      <span role="button" option="7" class="dots"></span>
+    
+</amp-selector>
 
 <amp-carousel class="carousel2"
   layout="responsive"
   height="150"
   width="500" loop
-  type="slides">
+  type="slides" indicator id="carouselWithPreview" on="slideChange:carouselWithPreviewSelector.toggle(index=event.index, value=true)">
   <div class="slide">
     <amp-img src="images/slider1.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Border Collie"></amp-img>
     <div class="caption">
-      <a href="https://www.worldbank.org/en/news/statement/2020/07/18/world-bank-group-president-david-malpass-remarks-at-the-g20-finance-ministers-and-central-bank-governors-meeting">Remarks for G20 Finance Ministers and Central Bank Governors Meeting <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-      World Bank Group President David Malpass released remarks at the virtual G20 Finance Ministers and Central Bank Governors Meeting, focusing on debt suspension, debt reduction, debt resolution, and debt transparency.
+      <div class="bnrTl"><a href="https://www.worldbank.org/en/news/statement/2020/07/18/world-bank-group-president-david-malpass-remarks-at-the-g20-finance-ministers-and-central-bank-governors-meeting" class="bannerTitle">Remarks for G20 Finance Ministers and Central Bank Governors Meeting <i class="fa fa-external-link chevonSymbl" aria-hidden="true"></i></a></div>
+     <p> World Bank Group President David Malpass released remarks at the virtual G20 Finance Ministers and Central Bank Governors Meeting, focusing on debt suspension, debt reduction, debt resolution, and debt transparency.</p>
     </div>
   </div>
 
   <div class="slide">
     <amp-img src="images/slider2.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Shetland Sheepdog"></amp-img>
     <div class="caption">
-     <a href="https://blogs.worldbank.org/voices/july-6-2020-fiscal-year-end-update-governors-world-bank-group"> Fiscal Year Update to the Governors of the World Bank Group <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-     In a letter to the Governors of the World Bank Group, President David Malpass provided an update on World Bank Group deliveries, as well as other efforts over the past year.
+    <div class="bnrTl"> <a tabindex="-1" href="https://blogs.worldbank.org/voices/july-6-2020-fiscal-year-end-update-governors-world-bank-group" class="bannerTitle"> Fiscal Year Update to the Governors of the World Bank Group <i class="fa fa-external-link chevonSymbl" aria-hidden="true"></i></a></div>
+     <p>In a letter to the Governors of the World Bank Group, President David Malpass provided an update on World Bank Group deliveries, as well as other efforts over the past year.<p>
     </div>
   </div>
 
+
   <div class="slide">
     <amp-img src="images/slider2.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Hovawart"></amp-img>
     <div class="caption">
-      <a href="https://blogs.worldbank.org/voices/fiscal-year-2020-review-our-mission-has-never-been-more-urgent">Fiscal Year 2020 in review: Our mission has never been more urgent <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-      As our fiscal year ends, a look back at our achievements and a commitment to providing the support needed to achieve a sustainable and inclusive recovery.
+      <div class="bnrTl"> <a tabindex="-1" href="https://blogs.worldbank.org/voices/fiscal-year-2020-review-our-mission-has-never-been-more-urgent" class="bannerTitle">Fiscal Year 2020 in review: Our mission has never been more urgent <i class="fa fa-external-link chevonSymbl" aria-hidden="true" ></i></a></div>
+      <p>As our fiscal year ends, a look back at our achievements and a commitment to providing the support needed to achieve a sustainable and inclusive recovery.</p>
     </div>
   </div>
 
   <div class="slide">
     <amp-img src="images/slider3.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Hovawart"></amp-img>
     <div class="caption">
-      <a href="https://www.worldbank.org/en/news/statement/2020/06/25/world-bank-group-president-david-malpass-remarks-at-the-sudan-partnership-conference">Committed to Supporting Sudan <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-      During the Sudan Partnership Conference, World Bank Group President David Malpass presented four Bank Group support efforts underway for Sudan. He called on donors and other international organizations to step up and give Sudan the best chance to succeed.
+      <div class="bnrTl"><a tabindex="-1" href="https://www.worldbank.org/en/news/statement/2020/06/25/world-bank-group-president-david-malpass-remarks-at-the-sudan-partnership-conference" class="bannerTitle">Committed to Supporting Sudan <i class="fa fa-external-link chevonSymbl" aria-hidden="true"></i></a></div>
+     <p> During the Sudan Partnership Conference, World Bank Group President David Malpass presented four Bank Group support efforts underway for Sudan. He called on donors and other international organizations to step up and give Sudan the best chance to succeed.</p>
     </div>
   </div>
 
   <div class="slide">
     <amp-img src="images/slider4.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Hovawart"></amp-img>
     <div class="caption">
-      <a href="https://blogs.worldbank.org/voices/june-19-2020-debt-and-investment-transparency-better-outcomes">Debt and Investment Transparency for Better Outcomes <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-      The World Bank Group has created a virtual one-stop for the latest information about the Debt Service Suspension Initiative (DSSI). It highlights potential savings which could be concentrated on responding to the COVID-19 pandemic.
+      <div class="bnrTl"><a tabindex="-1" href="https://blogs.worldbank.org/voices/june-19-2020-debt-and-investment-transparency-better-outcomes" class="bannerTitle">Debt and Investment Transparency for Better Outcomes <i class="fa fa-external-link chevonSymbl" aria-hidden="true"></i></a></div>
+     <p>The World Bank Group has created a virtual one-stop for the latest information about the Debt Service Suspension Initiative (DSSI). It highlights potential savings which could be concentrated on responding to the COVID-19 pandemic.</p>
     </div>
   </div>
 
   <div class="slide">
     <amp-img src="images/slider5.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Hovawart"></amp-img>
     <div class="caption">
-      <a href="https://blogs.worldbank.org/voices/june-18-2020-ending-racism">Ending racism <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-      “Racial discrimination and social injustice have no place in any of our workplaces or societies,” writes President Malpass in his weekly update.
+      <div class="bnrTl"><a tabindex="-1" href="https://blogs.worldbank.org/voices/june-18-2020-ending-racism" class="bannerTitle">Ending racism <i class="fa fa-external-link chevonSymbl" aria-hidden="true"></i></a></div>
+      <p>“Racial discrimination and social injustice have no place in any of our workplaces or societies,” writes President Malpass in his weekly update.</p>
     </div>
   </div>
 
   <div class="slide">
     <amp-img src="images/slider6.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Hovawart"></amp-img>
     <div class="caption">
-      <a href="https://live.worldbank.org/interview-world-bank-group-president-david-malpass">‘We’re moving to the next stage’ <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-      Over the past three months, the World Bank Group has mounted the fastest crisis response in its history. In this virtual interview, David Malpass, President of the World Bank Group, discussed the path ahead for developing countries in the fight against COVID-19. Watch the replay.
+      <div class="bnrTl"><a tabindex="-1" href="https://live.worldbank.org/interview-world-bank-group-president-david-malpass" class="bannerTitle">‘We’re moving to the next stage’ <i class="fa fa-external-link chevonSymbl" aria-hidden="true"></i></a></div>
+      <p>Over the past three months, the World Bank Group has mounted the fastest crisis response in its history. In this virtual interview, David Malpass, President of the World Bank Group, discussed the path ahead for developing countries in the fight against COVID-19. Watch the replay.</p>
     </div>
   </div>
 
   <div class="slide">
     <amp-img src="images/slider7.jpg"
-      layout="responsive" width="500" height="150"
+      layout="fill" width="500" height="150"
       alt="Hovawart"></amp-img>
     <div class="caption">
-      <a href="https://blogs.worldbank.org/voices/may-22-2020-end-week-update-covid-response-desert-locusts-new-chief-economist-and-more">COVID response, desert locusts, a new chief economist, and more <i class="fa fa-external-link" aria-hidden="true"></i></a><br>
-      World Bank Group President David Malpass shares key developments for the institution, including an update on COVID response, desert locusts, and a new chief economist, among other highlights.
+      <div class="bnrTl"><a tabindex="-1" href="https://blogs.worldbank.org/voices/may-22-2020-end-week-update-covid-response-desert-locusts-new-chief-economist-and-more" class="bannerTitle">COVID response, desert locusts, a new chief economist, and more <i class="fa fa-external-link chevonSymbl" aria-hidden="true"></i></a></div>
+      <p>World Bank Group President David Malpass shares key developments for the institution, including an update on COVID response, desert locusts, and a new chief economist, among other highlights.</p>
     </div>
   </div>
 </amp-carousel>
+
 </body>
 </html>
